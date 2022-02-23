@@ -10,7 +10,7 @@ public class TCPServer {
         BufferedReader in = null; // for reading form ServerRouter
         InetAddress addr = InetAddress.getLocalHost();
         String host = addr.getHostAddress(); // Server machine's IP
-        String routerName = "j263-08.cse1.spsu.edu"; // ServerRouter host name
+        String routerName = addr.getHostName(); // ServerRouter host name
         int SockNum = 5555; // port number
 
         // Tries to connect to the ServerRouter
@@ -34,15 +34,16 @@ public class TCPServer {
         // Communication process (initial sends/receives)
         out.println(address);// initial send (IP of the destination Client)
         fromClient = in.readLine();// initial receive from router (verification of connection)
-        System.out.println("ServerRouter: " + fromClient);
+        System.out.println("In TCPServer - ServerRouter: " + fromClient);
 
         // Communication while loop
         while ((fromClient = in.readLine()) != null) {
-            System.out.println("Client said: " + fromClient);
+            System.out.println("Test TCPServer");
+            System.out.println("In TCPServer - Client said: " + fromClient);
             if (fromClient.equals("Bye.")) // exit statement
                 break;
             fromServer = fromClient.toUpperCase(); // converting received message to upper case
-            System.out.println("Server said: " + fromServer);
+            System.out.println("In TCPServer - Server said: " + fromServer);
             out.println(fromServer); // sending the converted message back to the Client via ServerRouter
         }
 
