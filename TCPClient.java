@@ -31,7 +31,9 @@ public class TCPClient {
         BufferedReader fromFile = new BufferedReader(reader); // reader for the string file
         String fromServer; // messages received from ServerRouter
         String fromUser; // messages sent to ServerRouter
-        String address = "192.168.1.170"; // destination IP (Server)
+        //Server IP goes here
+        //Find this in console output of TCPServerRouter (ServerRouter connected with Client/Server: 127.0.0.1)
+        String address = "127.0.0.1"; // destination IP (Server)
         long t0, t1, t;
 
         // Communication process (initial sends/receives
@@ -42,6 +44,8 @@ public class TCPClient {
         t0 = System.currentTimeMillis();
         long tOriginal = t0;
 
+        int count = 0;
+
         // Communication while loop
         while ((fromServer = in.readLine()) != null) {
             System.out.println("Server: " + fromServer);
@@ -49,7 +53,15 @@ public class TCPClient {
             if (fromServer.equals("Bye.")) // exit statement
                 break;
             t = t1 - t0;
-            System.out.println("Cycle time: " + t);
+
+            //If this is the first run, display the lookup time
+            if (count == 0) {
+                System.out.println("Lookup time is: " + t*10e-3);
+            } else {
+                //Otherwise output cycle time per line
+                System.out.println("Cycle time: " + t*10e-3);
+            }
+            count++;
 
             fromUser = fromFile.readLine(); // reading strings from a file
             if (fromUser != null) {
@@ -58,7 +70,8 @@ public class TCPClient {
                 t0 = System.currentTimeMillis();
             }
             long t2 = System.currentTimeMillis();
-            System.out.println("Total time so far: " + (t2 - tOriginal));
+            //Total time so far, in nanoseconds
+            System.out.println("Total time so far: " + (t2 - tOriginal)*10e-3);
         }
 
         // closing connections
